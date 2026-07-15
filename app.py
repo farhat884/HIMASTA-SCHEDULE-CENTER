@@ -5,6 +5,7 @@ import base64
 import os
 from PIL import Image, ImageDraw
 import io
+import textwrap  # Library tambahan untuk merapikan spasi pada HTML markdown
 
 # --- CONFIG DASHBOARD ---
 st.set_page_config(page_title="Himasta Schedule Center", layout="wide", page_icon="📅")
@@ -195,12 +196,13 @@ with st.expander("📂 Klik di Sini untuk Menyaring Departemen / Divisi", expand
             
             img_html = f'<img src="data:image/png;base64,{img_base64}" style="width: 100px; height: 100px; object-fit: contain; margin-bottom: 8px; display: block; margin-left: auto; margin-right: auto;">' if img_base64 else '🏢'
             
-            st.markdown(f"""
+            # Dibungkus textwrap.dedent agar indentasi 12-spasi tidak dianggap blok kode oleh Markdown
+            st.markdown(textwrap.dedent(f"""
                 <div class="divisi-card {card_class}">
                     {img_html}
                     <div style="font-size: 14px; font-weight: 700; color: #ffffff;">{dept}</div>
                 </div>
-            """, unsafe_allow_html=True)
+            """), unsafe_allow_html=True)
             
             if st.button("Pilih", key=f"btn_toggle_{dept}", use_container_width=True):
                 st.session_state.filter_depts[dept] = not st.session_state.filter_depts[dept]
@@ -276,7 +278,7 @@ with col_cal:
     state = calendar(
         events=filtered_events,
         options=calendar_options,
-        custom_css=iframe_custom_css, # <--- Kuncinya di sini!
+        custom_css=iframe_custom_css,
         key="himasta_calendar",
     )
 
@@ -286,33 +288,78 @@ with col_detail:
         clicked = state["eventClick"]["event"]
         extended = clicked.get('extendedProps', {})
         dept_name = extended.get('dept', '-') if extended else '-'
-        desc_text = extended.get('desc', 'Tidak ada deskripsi.') if extended else 'Tidak ada deskripsi.'
         
+        # 1. AMBIL DATA DARI EVENT SECARA AMAN
+        title = clicked.get('title', 'Tanpa Nama Kegiatan')
+        start_date = clicked.get('start', '-')[:10]  # Mengambil format YYYY-MM-DD
+        
+        # Cek apakah ada tanggal selesai / tenggat waktu
+        end_date = clicked.get('end')[:10] if clicked.get('end') else None
+        
+        # Ambil deskripsi
+        desc_text = extended.get('desc', 'Tidak ada deskripsi kegiatan.') if extended else 'Tidak ada deskripsi kegiatan.'
+        
+        # 2. ATUR WARNA & LOGO DEPARTEMEN
         dept_colors = {"Akademik": "#10b981", "PSDM": "#ef4444", "PR": "#f59e0b", "RION": "#a855f7", "KOMINFO": "#60a5fa"}
         current_color = dept_colors.get(dept_name, "#3b82f6")
         img_base64 = globals().get(f"{dept_name.lower()}_base64", "")
         
         logo_html = f"""
-        <div style="text-align: center; margin-top: 10px; margin-bottom: 15px;">
-            <img src="data:image/png;base64,{img_base64}" style="width: 100px; height: 100px; object-fit: contain; margin-bottom: 6px;">
-            <div style="font-size: 14px; font-weight: 700; color: {current_color}; letter-spacing: 0.5px;">DIVISI {dept_name.upper()}</div>
-        </div>
+            <div style="text-align: center; margin-top: 10px; margin-bottom: 15px;">
+                <img src="data:image/png;base64,{img_base64}" style="width: 100px; height: 100px; object-fit: contain; margin-bottom: 6px;">
+                <div style="font-size: 14px; font-weight: 700; color: {current_color}; letter-spacing: 0.5px;">DIVISI {dept_name.upper()}</div>
+            </div>
         """ if img_base64 else ""
             
-        st.markdown(f"""
+        # Kondisi HTML jika ada tanggal selesai (tenggat waktu)
+        end_date_html = f"""
+            <p style="margin: 4px 0; font-size: 13px; color: #94a3b8;">
+                🏁 <b>Selesai / Tenggat:</b> <span style="color: #cbd5e1;">{end_date}</span>
+            </p>
+        """ if end_date else ""
+
+        # 3. GABUNGKAN HTML UTUH
+        html_content = f"""
             <div class="proker-card">
                 <span class="badge-dept">🏢 Dept: {dept_name}</span>
                 {logo_html}
-                <h2 style='margin:0 0 8px 0; color:#3b82f6; font-size:18px; font-weight:700;'>{clicked['title']}</h2>
-                <p style='margin: 2px 0; font-size:12px; color:#94a3b8;'>📅 <b>Mulai:</b> {clicked['start'][:10]}</p>
-                {"<p style='margin: 2px 0; font-size:12px; color:#94a3b8;'>🏁 <b>Selesai:</b> " + clicked['end'][:10] + "</p>" if clicked.get('end') else ""}
-                <hr style='border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 12px 0;'>
-                <p style='margin:0; font-size:13px; color:#e2e8f0; line-height:1.5;'><b>📋 Detail:</b><br>{desc_text}</p>
+                
+                <!-- Nama Kegiatan -->
+                <h2 style="margin: 12px 0 8px 0; color: #3b82f6; font-size: 20px; font-weight: 700; line-height: 1.3;">
+                    {title}
+                </h2>
+                
+                <!-- Tanggal Mulai & Tenggat Selesai -->
+                <div style="margin-bottom: 12px;">
+                    <p style="margin: 4px 0; font-size: 13px; color: #94a3b8;">
+                        📅 <b>Mulai:</b> <span style="color: #cbd5e1;">{start_date}</span>
+                    </p>
+                    {end_date_html}
+                </div>
+                
+                <hr style="border: 0; border-top: 1px solid rgba(255, 255, 255, 0.1); margin: 12px 0;">
+                
+                <!-- Deskripsi Kegiatan -->
+                <div style="margin-top: 8px;">
+                    <p style="margin: 0 0 4px 0; font-size: 11px; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">
+                        📋 Deskripsi Kegiatan
+                    </p>
+                    <p style="margin: 0; font-size: 13px; color: #e2e8f0; line-height: 1.6;">
+                        {desc_text}
+                    </p>
+                </div>
             </div>
-        """, unsafe_allow_html=True)
+        """
+        
+        # TRIK JITU: Memotong semua spasi di awal baris secara dinamis agar tidak memicu Markdown Code Block
+        cleaned_html = "\n".join([line.strip() for line in html_content.split("\n")])
+        st.markdown(cleaned_html, unsafe_allow_html=True)
+        
     else:
-        st.markdown("""
+        no_event_html = """
             <div style='background: rgba(255,255,255,0.02); border: 1px dashed rgba(255,255,255,0.1); border-radius: 8px; padding: 20px; text-align: center; color: #64748b; font-size:13px;'>
                 Klik salah satu agenda di kalender untuk melihat detail di sini.
             </div>
-        """, unsafe_allow_html=True)
+        """
+        cleaned_no_event = "\n".join([line.strip() for line in no_event_html.split("\n")])
+        st.markdown(cleaned_no_event, unsafe_allow_html=True)

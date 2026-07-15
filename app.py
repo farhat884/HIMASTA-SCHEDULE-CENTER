@@ -5,10 +5,24 @@ import base64
 import os
 from PIL import Image, ImageDraw
 import io
-import textwrap  # Library tambahan untuk merapikan spasi pada HTML markdown
+import textwrap
+from PIL import Image
 
 # --- CONFIG DASHBOARD ---
-st.set_page_config(page_title="Himasta Schedule Center", layout="wide", page_icon="📅")
+logo_path = "saran_perubahan_logo-removebg-preview.png"
+
+# 2. Cek apakah file logonya ada, jika ada buka pakai PIL, jika tidak pakai emoji cadangan
+if os.path.exists(logo_path):
+    icon_himpunan = Image.open(logo_path)
+else:
+    icon_himpunan = "📅"  # Cadangan jika file logo tidak ditemukan
+
+# 3. Pasang di set_page_config
+st.set_page_config(
+    page_title="Himasta Schedule Center", 
+    layout="wide", 
+    page_icon=icon_himpunan
+)
 
 # --- FUNGSI MENGUBAH GAMBAR BIASA KE BASE64 ---
 def get_base64_image(image_path):
@@ -173,7 +187,7 @@ if logo_base64:
                 Himasta Schedule Center
             </h1>
             <p style="margin-top: 8px; font-size: 14px; color: #94a3b8;">
-                🚀 <i>Hari ini: {datetime.date.today().strftime('%A, %d %B %Y')}</i>
+                <i>Hari ini: {datetime.date.today().strftime('%A, %d %B %Y')}</i>
             </p>
         </div>
     """, unsafe_allow_html=True)
@@ -181,7 +195,7 @@ if logo_base64:
 st.markdown("---")
 
 # --- FILTER DEPARTEMEN ---
-with st.expander("📂 Klik di Sini untuk Menyaring Departemen / Divisi", expanded=False):
+with st.expander("Pilih Divisi", expanded=False):
     if "filter_depts" not in st.session_state:
         st.session_state.filter_depts = {"Akademik": True, "PSDM": True, "PR": True, "RION": True, "KOMINFO": True}
 
@@ -196,7 +210,6 @@ with st.expander("📂 Klik di Sini untuk Menyaring Departemen / Divisi", expand
             
             img_html = f'<img src="data:image/png;base64,{img_base64}" style="width: 100px; height: 100px; object-fit: contain; margin-bottom: 8px; display: block; margin-left: auto; margin-right: auto;">' if img_base64 else '🏢'
             
-            # Dibungkus textwrap.dedent agar indentasi 12-spasi tidak dianggap blok kode oleh Markdown
             st.markdown(textwrap.dedent(f"""
                 <div class="divisi-card {card_class}">
                     {img_html}
@@ -211,13 +224,39 @@ with st.expander("📂 Klik di Sini untuk Menyaring Departemen / Divisi", expand
 filtered_dept = [dept for dept, active in st.session_state.filter_depts.items() if active]
 filtered_events = [e for e in st.session_state.proker_data if e['dept'] in filtered_dept]
 
+# ==========================================================
+# PROSES MENYUNTIKKAN BADGE [H-ANGKA] DI DEPAN JUDUL (BIAR RAPI SEPERTI KOLOM)
+# ==========================================================
+display_events = []
+today = datetime.date.today()
+
+for event in filtered_events:
+    event_copy = event.copy()
+    try:
+        event_date = datetime.datetime.strptime(event['start'][:10], "%Y-%m-%d").date()
+        delta = (event_date - today).days
+        
+        # Format penulisan H- / Hari H / H+ (Selesai)
+        if delta > 0:
+            countdown = f"H-{delta}"
+        elif delta == 0:
+            countdown = "Hari H"
+        else:
+            countdown = f"H+{abs(delta)}"
+            
+        # Kita letakkan di depan agar berbaris sejajar lurus ke bawah di List View!
+        event_copy['title'] = f"[{countdown}]  {event['title']}"
+    except Exception:
+        pass
+    display_events.append(event_copy)
+
 st.markdown("---")
 
 # --- LAYOUT UTAMA ---
 col_cal, col_detail = st.columns([1.8, 1.2])
 
 with col_cal:
-    st.markdown("#### 📅 Kalender Kegiatan")
+    st.markdown("#### Kalender Kegiatan")
     
     calendar_options = {
         "initialView": "dayGridMonth",
@@ -225,7 +264,7 @@ with col_cal:
         "headerToolbar": {
             "left": "prev,next",
             "center": "title",
-            "right": "today,listMonth",
+            "right": "today,dayGridMonth,listMonth",
         },
         "editable": False,
         "selectable": True,
@@ -272,11 +311,15 @@ with col_cal:
         }
         .fc .fc-button-primary:hover { background-color: #2563eb !important; }
         .fc .fc-button-primary:not(:disabled).fc-button-active { background-color: #1d4ed8 !important; }
+
+        /* Sembunyikan kolom "all-day" di List View */
+        .fc-list-event-time {
+            display: none !important;
+        }
     """
     
-    # Jalankan kalender dengan properti custom_css
     state = calendar(
-        events=filtered_events,
+        events=display_events,
         options=calendar_options,
         custom_css=iframe_custom_css,
         key="himasta_calendar",
@@ -290,13 +333,16 @@ with col_detail:
         dept_name = extended.get('dept', '-') if extended else '-'
         
         # 1. AMBIL DATA DARI EVENT SECARA AMAN
-        title = clicked.get('title', 'Tanpa Nama Kegiatan')
-        start_date = clicked.get('start', '-')[:10]  # Mengambil format YYYY-MM-DD
+        raw_title = clicked.get('title', 'Tanpa Nama Kegiatan')
         
-        # Cek apakah ada tanggal selesai / tenggat waktu
+        # BERSIHKAN JUDUL: Potong embel-embel "[H-...]  " di depan agar judul utama di panel tetap rapi dan bersih
+        if "]  " in raw_title:
+            title = raw_title.split("]  ", 1)[-1]
+        else:
+            title = raw_title
+        
+        start_date = clicked.get('start', '-')[:10]
         end_date = clicked.get('end')[:10] if clicked.get('end') else None
-        
-        # Ambil deskripsi
         desc_text = extended.get('desc', 'Tidak ada deskripsi kegiatan.') if extended else 'Tidak ada deskripsi kegiatan.'
         
         # 2. ATUR WARNA & LOGO DEPARTEMEN
@@ -311,7 +357,6 @@ with col_detail:
             </div>
         """ if img_base64 else ""
             
-        # Kondisi HTML jika ada tanggal selesai (tenggat waktu)
         end_date_html = f"""
             <p style="margin: 4px 0; font-size: 13px; color: #94a3b8;">
                 🏁 <b>Selesai / Tenggat:</b> <span style="color: #cbd5e1;">{end_date}</span>
@@ -321,15 +366,13 @@ with col_detail:
         # 3. GABUNGKAN HTML UTUH
         html_content = f"""
             <div class="proker-card">
-                <span class="badge-dept">🏢 Dept: {dept_name}</span>
+                <span class="badge-dept"> Dept: {dept_name}</span>
                 {logo_html}
                 
-                <!-- Nama Kegiatan -->
                 <h2 style="margin: 12px 0 8px 0; color: #3b82f6; font-size: 20px; font-weight: 700; line-height: 1.3;">
                     {title}
                 </h2>
                 
-                <!-- Tanggal Mulai & Tenggat Selesai -->
                 <div style="margin-bottom: 12px;">
                     <p style="margin: 4px 0; font-size: 13px; color: #94a3b8;">
                         📅 <b>Mulai:</b> <span style="color: #cbd5e1;">{start_date}</span>
@@ -339,7 +382,6 @@ with col_detail:
                 
                 <hr style="border: 0; border-top: 1px solid rgba(255, 255, 255, 0.1); margin: 12px 0;">
                 
-                <!-- Deskripsi Kegiatan -->
                 <div style="margin-top: 8px;">
                     <p style="margin: 0 0 4px 0; font-size: 11px; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">
                         📋 Deskripsi Kegiatan
@@ -351,7 +393,6 @@ with col_detail:
             </div>
         """
         
-        # TRIK JITU: Memotong semua spasi di awal baris secara dinamis agar tidak memicu Markdown Code Block
         cleaned_html = "\n".join([line.strip() for line in html_content.split("\n")])
         st.markdown(cleaned_html, unsafe_allow_html=True)
         

@@ -179,8 +179,8 @@ if "proker_data" not in st.session_state:
         
         # PSDM
         {"title": "PSDM: Oprec Pendaftaran", "start": "2026-10-06", "end": "2026-10-10", "color": "#ef4444", "dept": "PSDM", "desc": "Masa pendaftaran calon anggota baru Himasta."},
-        {"title": "PSDM: Oprec Interview", "start": "2026-10-13", "end": "2026-10-15", "color": "#ef4444", "dept": "PSDM", "desc": "Tahap wawancara calon anggota baru."},
-        {"title": "PSDM: Oprec Pengumuman", "start": "2026-10-17", "color": "#ef4444", "dept": "PSDM", "desc": "Pengumuman kelulusan calon anggota baru."},
+        {"title": "PSDM: Oprec Interview", "start": "2026-10-17", "color": "#ef4444", "dept": "PSDM", "desc": "Tahap wawancara calon anggota baru."},
+        {"title": "PSDM: Oprec Pengumuman", "start": "2026-11-17", "color": "#ef4444", "dept": "PSDM", "desc": "Pengumuman kelulusan calon anggota baru."},
         {"title": "PSDM: LDKM & Makrab", "start": "2026-11-14", "end": "2026-11-15", "color": "#ef4444", "dept": "PSDM", "desc": "Latihan Dasar Kepemimpinan dan Malam Keakraban anggota baru Himasta."},
         {"title": "PSDM: Ruang Himasta (Rutin)", "start": "2026-12-05", "color": "#ef4444", "dept": "PSDM", "desc": "Diskusi santai dan sharing session rutin seluruh anggota Himasta."},
         {"title": "PSDM: Ruang Himasta (Rutin)", "start": "2027-02-06", "color": "#ef4444", "dept": "PSDM", "desc": "Diskusi santai dan sharing session rutin seluruh anggota Himasta."},
@@ -208,7 +208,7 @@ if "proker_data" not in st.session_state:
         
         # PR
         {"title": "PR: Ramadhan Berbagi (Baksos & Takjil)", "start": "2027-02-20", "color": "#f59e0b", "dept": "PR", "desc": "Kegiatan berbagi takjil dan bakti sosial di bulan suci Ramadhan."},
-        {"title": "PR: Studi Banding Eksternal", "start": "2027-04-24", "color": "#f59e0b", "dept": "PR", "desc": "Kolaborasi dan pertukaran proker dengan HIMA Universitas atau Prodi lain pasca Lebaran."},
+        {"title": "PR: Studi Banding Eksternal", "start": "2026-10-24", "color": "#f59e0b", "dept": "PR", "desc": "Kolaborasi dan pertukaran proker dengan HIMA Universitas atau Prodi lain pasca Lebaran."},
         {"title": "PR: Himasta Bukber Internal", "start": "2027-02-21", "color": "#f59e0b", "dept": "PR", "desc": "Buka puasa bersama khusus untuk mempererat tali silaturahmi internal pengurus Himasta."},
         {"title": "PR: Bakti Sosial", "start": "2027-06-13", "color": "#f59e0b", "dept": "PR", "desc": "Kegiatan sosial Himasta dengan berbagi ke panti asuhan."},
         

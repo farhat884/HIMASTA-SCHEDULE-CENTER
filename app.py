@@ -179,8 +179,8 @@ if "proker_data" not in st.session_state:
         {"title": "RION: Sidang LPJ & Eksposia Awarding", "start": "2027-07-18", "color": "#8b5cf6", "dept": "RION", "desc": "Sidang pertanggungjawaban formal yang ditutup dengan sesi awarding apresiasi pengurus."},
         
         # PSDM (LDKM Sebelum Oprec Pendaftaran)
-        {"title": "PSDM: LDKM (Latihan Dasar Kepemimpinan)", "start": "2026-11-07", "end": "2026-11-08", "color": "#ef4444", "dept": "PSDM", "desc": "Latihan Dasar Kepemimpinan untuk seluruh Maba sebelum pendaftaran Oprec."},
-        {"title": "PSDM: Oprec Pendaftaran", "start": "2026-11-09", "end": "2026-11-14", "color": "#ef4444", "dept": "PSDM", "desc": "Masa pendaftaran calon anggota baru Himasta."},
+        {"title": "PSDM: LDKM (Latihan Dasar Kepemimpinan)", "start": "2026-11-14", "end": "2026-11-14", "color": "#ef4444", "dept": "PSDM", "desc": "Latihan Dasar Kepemimpinan untuk seluruh Maba sebelum pendaftaran Oprec."},
+        {"title": "PSDM: Oprec Pendaftaran", "start": "2026-11-16", "end": "2026-11-20", "color": "#ef4444", "dept": "PSDM", "desc": "Masa pendaftaran calon anggota baru Himasta."},
         {"title": "PSDM: Oprec Interview", "start": "2026-11-21", "color": "#ef4444", "dept": "PSDM", "desc": "Tahap wawancara calon anggota baru."},
         {"title": "PSDM: Makrab & Pengumuman", "start": "2026-11-28", "end": "2026-11-29", "color": "#ef4444", "dept": "PSDM", "desc": "Malam keakraban sekaligus pengumuman kelulusan anggota baru Himasta."},
         {"title": "PSDM: Ruang Himasta (Rutin)", "start": "2026-12-05", "color": "#ef4444", "dept": "PSDM", "desc": "Diskusi santai dan sharing session rutin seluruh anggota Himasta."},

@@ -203,7 +203,7 @@ if "proker_data" not in st.session_state:
         {"title": "KOMINFO: Rilis Konten Foto & Video", "start": "2027-02-15", "color": "#3b82f6", "dept": "KOMINFO", "desc": "Publikasi konten visual menggunakan template HVIS yang telah dirilis."},
         {"title": "KOMINFO: Rilis Konten Foto & Video", "start": "2027-04-15", "color": "#3b82f6", "dept": "KOMINFO", "desc": "Publikasi konten visual menggunakan template HVIS yang telah dirilis."},
         {"title": "KOMINFO: Rilis Konten Foto & Video", "start": "2027-06-15", "color": "#3b82f6", "dept": "KOMINFO", "desc": "Publikasi konten visual menggunakan template HVIS yang telah dirilis."},
-        {"title": "KOMINFO: Membuat design ID Card & PDH HIMASTA", "start": "2026-10-15", "end": "2026-10-20", "color": "#3b82f6", "dept": "KOMINFO", "desc": "Perilisan Design ID Card dan PDH."},
+        {"title": "KOMINFO: Membuat design ID Card & PDH HIMASTA", "start": "2026-09-14", "end": "2026-09-19", "color": "#3b82f6", "dept": "KOMINFO", "desc": "Perilisan Design ID Card dan PDH."},
         {"title": "KOMINFO: New Generation (Photoshoot)", "start": "2026-08-02", "color": "#3b82f6", "dept": "KOMINFO", "desc": "Sesi photoshoot anggota baru"},
         {"title": "KOMINFO: 🎂 Birthday Celebration", "start": "2026-11-03", "color": "#3b82f6", "dept": "KOMINFO", "desc": "Posting Perayaan ulang tahun Himasta"},
         

@@ -167,21 +167,22 @@ st.markdown("""
     """, unsafe_allow_html=True)
 
 # --- INISIALISASI DATA PROGRAM KERJA ---
+
 if "proker_data" not in st.session_state:
     st.session_state.proker_data = [
         # RION
-        {"title": "RION: PMB (Penyambutan Maba)", "start": "2026-11-07", "color": "#8b5cf6", "dept": "RION", "desc": "Acara seremonial penyambutan mahasiswa baru sebagai pintu masuk ke Himasta."},
-        {"title": "RION: Workshop Pengenalan Himasta", "start": "2026-11-21", "color": "#8b5cf6", "dept": "RION", "desc": "Workshop pendalaman materi struktur, proker, dan peran tiap divisi bagi maba."},
+        {"title": "RION: PMB (Penyambutan Maba)", "start": "2026-10-17", "color": "#8b5cf6", "dept": "RION", "desc": "Acara seremonial penyambutan mahasiswa baru sebagai pintu masuk ke Himasta."},
+        {"title": "RION: Workshop Pengenalan Himasta", "start": "2026-10-31", "color": "#8b5cf6", "dept": "RION", "desc": "Workshop pendalaman materi struktur, proker, dan peran tiap divisi bagi maba."},
+        {"title": "RION: Kuliah Umum", "start": "2026-11-28", "color": "#8b5cf6", "dept": "RION", "desc": "Acara tahunan kuliah umum dengan narasumber ahli di bidang Sains Data."},
         {"title": "RION: Kunjungan Industri 1", "start": "2027-07-19", "color": "#8b5cf6", "dept": "RION", "desc": "Kunjungan industri tahap pertama sebagai bagian dari rangkaian penutup periode."},
         {"title": "RION: Kunjungan Industri 2", "start": "2027-07-19", "color": "#8b5cf6", "dept": "RION", "desc": "Kunjungan industri tahap kedua sekaligus puncak kegiatan akhir periode."},
-        {"title": "RION: Kuliah Umum", "start": "2026-11-28", "color": "#8b5cf6", "dept": "RION", "desc": "Acara tahunan kuliah umum dengan narasumber ahli di bidang Sains Data."},
         {"title": "RION: Sidang LPJ & Eksposia Awarding", "start": "2027-07-18", "color": "#8b5cf6", "dept": "RION", "desc": "Sidang pertanggungjawaban formal yang ditutup dengan sesi awarding apresiasi pengurus."},
         
-        # PSDM
-        {"title": "PSDM: Oprec Pendaftaran", "start": "2026-10-06", "end": "2026-10-10", "color": "#ef4444", "dept": "PSDM", "desc": "Masa pendaftaran calon anggota baru Himasta."},
-        {"title": "PSDM: Oprec Interview", "start": "2026-10-17", "color": "#ef4444", "dept": "PSDM", "desc": "Tahap wawancara calon anggota baru."},
-        {"title": "PSDM: Oprec Pengumuman", "start": "2026-11-17", "color": "#ef4444", "dept": "PSDM", "desc": "Pengumuman kelulusan calon anggota baru."},
-        {"title": "PSDM: LDKM & Makrab", "start": "2026-11-14", "end": "2026-11-15", "color": "#ef4444", "dept": "PSDM", "desc": "Latihan Dasar Kepemimpinan dan Malam Keakraban anggota baru Himasta."},
+        # PSDM (LDKM Sebelum Oprec Pendaftaran)
+        {"title": "PSDM: LDKM (Latihan Dasar Kepemimpinan)", "start": "2026-11-07", "end": "2026-11-08", "color": "#ef4444", "dept": "PSDM", "desc": "Latihan Dasar Kepemimpinan untuk seluruh Maba sebelum pendaftaran Oprec."},
+        {"title": "PSDM: Oprec Pendaftaran", "start": "2026-11-09", "end": "2026-11-14", "color": "#ef4444", "dept": "PSDM", "desc": "Masa pendaftaran calon anggota baru Himasta."},
+        {"title": "PSDM: Oprec Interview", "start": "2026-11-21", "color": "#ef4444", "dept": "PSDM", "desc": "Tahap wawancara calon anggota baru."},
+        {"title": "PSDM: Makrab & Pengumuman", "start": "2026-11-28", "end": "2026-11-29", "color": "#ef4444", "dept": "PSDM", "desc": "Malam keakraban sekaligus pengumuman kelulusan anggota baru Himasta."},
         {"title": "PSDM: Ruang Himasta (Rutin)", "start": "2026-12-05", "color": "#ef4444", "dept": "PSDM", "desc": "Diskusi santai dan sharing session rutin seluruh anggota Himasta."},
         {"title": "PSDM: Ruang Himasta (Rutin)", "start": "2027-02-06", "color": "#ef4444", "dept": "PSDM", "desc": "Diskusi santai dan sharing session rutin seluruh anggota Himasta."},
         {"title": "PSDM: Ruang Himasta (Rutin)", "start": "2027-05-01", "color": "#ef4444", "dept": "PSDM", "desc": "Diskusi santai dan sharing session rutin seluruh anggota Himasta."},
@@ -212,15 +213,15 @@ if "proker_data" not in st.session_state:
         {"title": "PR: Himasta Bukber Internal", "start": "2027-02-21", "color": "#f59e0b", "dept": "PR", "desc": "Buka puasa bersama khusus untuk mempererat tali silaturahmi internal pengurus Himasta."},
         {"title": "PR: Bakti Sosial", "start": "2027-06-13", "color": "#f59e0b", "dept": "PR", "desc": "Kegiatan sosial Himasta dengan berbagi ke panti asuhan."},
         
-        # Akademik
-        {"title": "AKADEMIK: Pembukaan pendaftaran RUBIK", "start": "2026-12-20","end": "2026-12-25", "color": "#10b981", "dept": "Akademik", "desc": "Pembukaan pendaftaran Untuk mengajar dan setiap mengajar akan didapatkan riset yang akan diajukan ke prodi untuk Asisten Praktikum."},
-        {"title": "AKADEMIK: Tenggat Waktu AKSES", "start": "2026-12-06","end": "2026-12-11", "color": "#10b981", "dept": "Akademik", "desc": "Mengumpulkan Soal dan Materi."},
-        {"title": "AKADEMIK: Pembukaan pendaftaran RUBIK", "start": "2027-03-21","end": "2027-03-26", "color": "#10b981", "dept": "Akademik", "desc": "Pembukaan pendaftaran Untuk mengajar dan setiap mengajar akan didapatkan riset yang akan diajukan ke prodi untuk Asisten Praktikum."},
-        {"title": "AKADEMIK: Tenggat Waktu AKSES", "start": "2027-03-07","end": "2027-03-12", "color": "#10b981", "dept": "Akademik", "desc": "Mengumpulkan Soal dan Materi."},
-        {"title": "AKADEMIK: Pembukaan pendaftaran RUBIK", "start": "2027-06-20","end": "2027-06-25", "color": "#10b981", "dept": "Akademik", "desc": "Pembukaan pendaftaran Untuk mengajar dan setiap mengajar akan didapatkan riset yang akan diajukan ke prodi untuk Asisten Praktikum."},
-        {"title": "AKADEMIK: Tenggat Waktu AKSES", "start": "2027-06-06","end": "2026-06-13", "color": "#10b981", "dept": "Akademik", "desc": "Mengumpulkan Soal dan Materi."},
-        {"title": "AKADEMIK: Pembukaan pendaftaran RUBIK", "start": "2027-09-20","end": "2027-09-25", "color": "#10b981", "dept": "Akademik", "desc": "Pembukaan pendaftaran Untuk mengajar dan setiap mengajar akan didapatkan riset yang akan diajukan ke prodi untuk Asisten Praktikum."},
-        {"title": "AKADEMIK: Tenggat Waktu AKSES", "start": "2027-09-06","end": "2026-09-13", "color": "#10b981", "dept": "Akademik", "desc": "Mengumpulkan Soal dan Materi."},
+        # AKADEMIK
+        {"title": "AKADEMIK: Pembukaan pendaftaran RUBIK", "start": "2026-12-20", "end": "2026-12-25", "color": "#10b981", "dept": "Akademik", "desc": "Pembukaan pendaftaran Untuk mengajar dan setiap mengajar akan didapatkan riset yang akan diajukan ke prodi untuk Asisten Praktikum."},
+        {"title": "AKADEMIK: Tenggat Waktu AKSES", "start": "2026-12-06", "end": "2026-12-11", "color": "#10b981", "dept": "Akademik", "desc": "Mengumpulkan Soal dan Materi."},
+        {"title": "AKADEMIK: Pembukaan pendaftaran RUBIK", "start": "2027-03-21", "end": "2027-03-26", "color": "#10b981", "dept": "Akademik", "desc": "Pembukaan pendaftaran Untuk mengajar dan setiap mengajar akan didapatkan riset yang akan diajukan ke prodi untuk Asisten Praktikum."},
+        {"title": "AKADEMIK: Tenggat Waktu AKSES", "start": "2027-03-07", "end": "2027-03-12", "color": "#10b981", "dept": "Akademik", "desc": "Mengumpulkan Soal dan Materi."},
+        {"title": "AKADEMIK: Pembukaan pendaftaran RUBIK", "start": "2027-06-20", "end": "2027-06-25", "color": "#10b981", "dept": "Akademik", "desc": "Pembukaan pendaftaran Untuk mengajar dan setiap mengajar akan didapatkan riset yang akan diajukan ke prodi untuk Asisten Praktikum."},
+        {"title": "AKADEMIK: Tenggat Waktu AKSES", "start": "2027-06-06", "end": "2027-06-13", "color": "#10b981", "dept": "Akademik", "desc": "Mengumpulkan Soal dan Materi."},
+        {"title": "AKADEMIK: Pembukaan pendaftaran RUBIK", "start": "2027-09-20", "end": "2027-09-25", "color": "#10b981", "dept": "Akademik", "desc": "Pembukaan pendaftaran Untuk mengajar dan setiap mengajar akan didapatkan riset yang akan diajukan ke prodi untuk Asisten Praktikum."},
+        {"title": "AKADEMIK: Tenggat Waktu AKSES", "start": "2027-09-06", "end": "2027-09-13", "color": "#10b981", "dept": "Akademik", "desc": "Mengumpulkan Soal dan Materi."},
         {"title": "AKADEMIK: One Minute with Academic [Video]", "start": "2026-10-12", "end": "2026-10-13", "color": "#10b981", "dept": "Akademik", "desc": "Gencaran konten edukasi dalam bentuk Video 3 bulan sekali"},
         {"title": "AKADEMIK: One Minute with Academic [Video]", "start": "2027-01-12", "end": "2027-01-13", "color": "#10b981", "dept": "Akademik", "desc": "Gencaran konten edukasi dalam bentuk Video 3 bulan sekali"},
         {"title": "AKADEMIK: One Minute with Academic [Video]", "start": "2027-04-12", "end": "2027-04-13", "color": "#10b981", "dept": "Akademik", "desc": "Gencaran konten edukasi dalam bentuk Video 3 bulan sekali"},
